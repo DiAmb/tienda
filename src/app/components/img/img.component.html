@@ -1,0 +1,5 @@
+<img (load)="imgLoaded()" (error)="imgError()" [src]="img" alt="La imagen del producto" *ngIf="img; else elseImg">
+<!-- <h3>{{counter}}</h3> -->
+<ng-template #elseImg>
+  <img width="200" src="./assets/img/default.png" alt="No cargo la imagen del producto">
+</ng-template>
