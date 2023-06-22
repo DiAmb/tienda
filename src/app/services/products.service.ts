@@ -12,6 +12,7 @@ import {
 } from '../components/models/producto.model';
 import { catchError, map, retry, throwError, zip } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { checkTime } from '../interceptors/time.interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -61,17 +62,19 @@ export class ProductsService {
       params = params.set('limit', limit);
       params = params.set('offset', limit);
     }
-    return this.http.get<Producto[]>(this.apiUrl, { params }).pipe(
-      retry(3),
-      map((products) => {
-        return products.map((item) => {
-          return {
-            ...item,
-            taxes: 0.12 * item.price,
-          };
-        });
-      })
-    );
+    return this.http
+      .get<Producto[]>(this.apiUrl, { params, context: checkTime() })
+      .pipe(
+        retry(3),
+        map((products) => {
+          return products.map((item) => {
+            return {
+              ...item,
+              taxes: 0.12 * item.price,
+            };
+          });
+        })
+      );
   }
   fetchReadAndUpdate(id: string, dto: UpdateProductDTO) {
     return zip(this.getProduct(id), this.update(id, dto));
