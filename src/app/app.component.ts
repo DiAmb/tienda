@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
 
 @Component({
@@ -10,11 +9,9 @@ import { UsersService } from './services/users.service';
 export class AppComponent {
   //imgParent = 'https://www.w3schools.com/howto/img_avatar.png';
   imgParent = '';
+  token = '';
 
-  constructor(
-    private authService: AuthService,
-    private userService: UsersService
-  ) {}
+  constructor(private userService: UsersService) {}
 
   onLoaded(img: string) {
     console.log('Padre log', img);
@@ -29,10 +26,5 @@ export class AppComponent {
       .subscribe((rta) => {
         console.log(rta);
       });
-  }
-  login() {
-    this.authService.login('Diego@gmail.com', '666').subscribe((rta) => {
-      console.log(rta.access_token);
-    });
   }
 }
