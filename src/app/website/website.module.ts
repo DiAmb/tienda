@@ -11,6 +11,7 @@ import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { QuicklinkModule } from 'ngx-quicklink';
 
 import { NavComponent } from './components/nav/nav.component';
 import { SharedModule } from '../shared/shared.module';
@@ -27,6 +28,12 @@ import { SharedModule } from '../shared/shared.module';
     ProductDetailComponent,
     LayoutComponent,
   ],
-  imports: [CommonModule, WebsiteRoutingModule, SwiperModule, SharedModule],
+  imports: [
+    CommonModule,
+    WebsiteRoutingModule,
+    SwiperModule,
+    SharedModule,
+    QuicklinkModule,
+  ],
 })
 export class WebsiteModule {}
