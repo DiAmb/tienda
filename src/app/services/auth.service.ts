@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Auth } from '../components/models/auth.model';
-import { User } from '../components/models/user.model';
+
 import { TokenService } from './token.service';
 import { switchMap, tap } from 'rxjs';
+import { Auth } from '../website/components/models/auth.model';
+import { User } from '../website/components/models/user.model';
 
 @Injectable({
   providedIn: 'root',

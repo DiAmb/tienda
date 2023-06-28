@@ -1,0 +1,25 @@
+<!-- <button (click)="createNewProduct()">Create</button>
+<button (click)="onShowDetail('12222')">DetailProduct Not Found</button> -->
+<div class="products--grid">
+  <app-producto [product]="producto" *ngFor="let producto of products" (addedProduct)="onAddToShopCar($event)"
+    (showProduct)="onShowDetail($event)"></app-producto>
+  <button (click)="loadMore()">Load more</button>
+  <div class="product-detail" [class.active]="showProductDetail">
+    {{statusDetail}}
+    <div *ngIf="productChosen">
+      <button (click)="toggleProduct()">Close</button>
+      <h1>{{productChosen.title}}</h1>
+      <swiper [slidesPerView]="1">
+        <ng-template swiperSlide *ngFor="let img of productChosen.images ">
+
+          <img [src]="img" alt="imagen del producto">
+
+        </ng-template>
+      </swiper>
+      <p>{{productChosen.description}}</p>
+      <button (click)="updateProduct()">Editar </button>
+      <button (click)="deleteProduct()">Eliminar </button>
+
+    </div>
+  </div>
+</div>
