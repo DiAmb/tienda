@@ -1,6 +1,6 @@
 [build]
   publish = “dist/tienda”
-  command = “ng build”
+  command = “npm run”
 [[redirects]]
   from = “/*”
   to = “/index.html”
