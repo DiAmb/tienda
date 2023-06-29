@@ -1,17 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
-import { TokenService } from './token.service';
-import { switchMap, tap } from 'rxjs';
-import { Auth } from '../website/components/models/auth.model';
+import { environment } from './../../environments/environment';
+
+import { TokenService } from './../services/token.service';
 import { User } from '../website/components/models/user.model';
+import { Auth } from '../website/components/models/auth.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.API_URL}api/auth`;
+  private apiUrl = `${environment.API_URL}/api/auth`;
+  private user = new BehaviorSubject<User | null>(null);
+  user$ = this.user.asObservable();
+
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   login(email: string, password: string) {
@@ -21,16 +26,18 @@ export class AuthService {
         tap((response) => this.tokenService.saveToken(response.access_token))
       );
   }
-  // profile(token: string) {
-  profile() {
-    // let headers = new HttpHeaders();
-    // headers = headers.set('Authorization', `Bearer ${token}`);
-    // return this.http.get<User>(`${this.apiUrl}/profile`, {
-    //   headers,
-    // });
-    return this.http.get<User>(`${this.apiUrl}/profile`, {});
+
+  getProfile() {
+    return this.http
+      .get<User>(`${this.apiUrl}/profile`)
+      .pipe(tap((user) => this.user.next(user)));
   }
+
   loginAndGet(email: string, password: string) {
-    return this.login(email, password).pipe(switchMap(() => this.profile()));
+    return this.login(email, password).pipe(switchMap(() => this.getProfile()));
+  }
+
+  logout() {
+    this.tokenService.removeToken();
   }
 }
